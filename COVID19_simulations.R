@@ -4,7 +4,7 @@ require(deSolve)
 require(caTools)
 require(incidence)
 
-# function for estimating cases given input parameters 
+# function for generating SARS-CoV-2 scenarios given input paraemeters
 
 #### Inputs
 # nsim is number of simulations
