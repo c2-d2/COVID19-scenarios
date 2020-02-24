@@ -14,7 +14,8 @@ ui <- fluidPage(position="left",
     href="https://zenodo.org/badge/latestdoi/242795015",
     tags$img(src="https://zenodo.org/badge/242795015.svg",
              title="DOI"))),
-  h5("Developed by the Center for Communicable Disease Dynamics at the Harvard T.H. Chan School of Public Health (Rebecca Kahn, Stephen Kissler, Nishant Kishore and Marc Lipsitch), in collaboration with Health Department colleagues. This is for scenario exploration only. Some scenarios generated may be unrealistic, and users should exercise judgment in interpreting the outputs."),
+  h5("Developed by the Center for Communicable Disease Dynamics at the Harvard T.H. Chan School of Public Health (Rebecca Kahn, Stephen Kissler, Nishant Kishore and Marc Lipsitch), in collaboration with Health Department colleagues. This is for scenario exploration only. Some scenarios generated may be unrealistic, and users should exercise judgment in interpreting the outputs."), 
+  h5("Important note: This app was developed for the specific purpose of considering how many cases might currently be circulating in a setting where testing has not been widespread. It is not designed as a rigorous way to evaluate impacts of interventions."),
   strong(h5("Overview:")),
   tags$ul(tags$li(h5("We calibrated timing of introductions of infected persons into a city based on an epidemic curve with exponential growth beginning on December 1 (based on genomics data, SARS-CoV-2 was estimated to have been first introduced into the human population sometime in November or early December 2019)
       and then leveling off on January 23 (when travel restrictions were implemented in Wuhan) to account for decreased travel from Wuhan but to allow for continued introductions from elsewhere. 
