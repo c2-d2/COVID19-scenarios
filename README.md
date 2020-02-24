@@ -61,3 +61,6 @@ References
 - Doubling time: https://www.thelancet.com/journals/lancet/article/PIIS0140-6736(20)30260-9/fulltext
 
 Questions? Email Rebecca Kahn (rek160@mail.harvard.ed)
+
+[![DOI](https://zenodo.org/badge/242795015.svg)](https://zenodo.org/badge/latestdoi/242795015)
+
