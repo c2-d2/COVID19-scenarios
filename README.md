@@ -1,6 +1,8 @@
 Code for scenario exploration for SARS-CoV-2 infections
 
-Developed by the Center for Communicable Disease Dynamics at the Harvard T.H. Chan School of Public Health (Rebecca Kahn, Stephen Kissler, Nishant Kishore and Marc Lipsitch), in collaboration with Health Department colleagues. This is for scenario exploration only. Some scenarios generated may be unrealistic, and users should exercise judgment in interpreting the outputs.
+Developed by the Center for Communicable Disease Dynamics at the Harvard T.H. Chan School of Public Health (Rebecca Kahn, Stephen Kissler, Nishant Kishore and Marc Lipsitch), in collaboration with Health Department colleagues. 
+
+This is for scenario exploration only. Some scenarios generated may be unrealistic, and users should exercise judgment in interpreting the outputs.
 
 Overview:
 
