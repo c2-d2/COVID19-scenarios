@@ -66,7 +66,7 @@ ui <- fluidPage(position="left",
               choices = c(0,0.1,0.3,0.5),selected=0.1)),
   
   mainPanel(position="right",
-            tableOutput('table2'),plotlyOutput("graph2"),plotlyOutput("graph3"),tableOutput('table1'),textOutput('text1'),imageOutput('image1')
+            tableOutput('table2'),plotlyOutput("graph2"),plotlyOutput("graph3"),tableOutput('table1'),textOutput('text1')
   )
 )
 
