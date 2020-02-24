@@ -43,3 +43,17 @@ Important caveats:
 Findings:
 
 - The amount of presymptomatic transmission and the extent to which infected people limit contacts (a combination of proportion symptomatic and probability they will self-observe) have a large impact on the total number of infections.
+
+To explore scenarios: https://rebeccakahn.shinyapps.io/COVID19/
+
+References
+
+- Introduction time: http://virological.org/t/phylogenetic-analysis-of-23-ncov-2019-genomes-2020-01-23/335/5
+  
+- Incubation period: https://www.medrxiv.org/content/10.1101/2020.01.27.20018986v1.full.pdf
+
+- Severity: https://www.who.int/docs/default-source/coronaviruse/transcripts/transcript-coronavirus-press-conference-full-07feb2020-final.pdf?sfvrsn=3beba1c0_2
+
+- Dispersion parameter: https://www.eurosurveillance.org/content/10.2807/1560-7917.ES.2020.25.4.2000058
+
+- Doubling time: https://www.thelancet.com/journals/lancet/article/PIIS0140-6736(20)30260-9/fulltext
