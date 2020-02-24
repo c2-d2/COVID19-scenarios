@@ -59,3 +59,5 @@ References
 - Dispersion parameter: https://www.eurosurveillance.org/content/10.2807/1560-7917.ES.2020.25.4.2000058
 
 - Doubling time: https://www.thelancet.com/journals/lancet/article/PIIS0140-6736(20)30260-9/fulltext
+
+Questions? Email Rebecca Kahn (rek160@mail.harvard.ed)
