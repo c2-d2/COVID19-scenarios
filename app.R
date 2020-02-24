@@ -10,6 +10,10 @@ nCoV_table <- read.csv('./nCoV_table.csv')
 ui <- fluidPage(position="left",
   
   titlePanel('Scenario exploration for SARS-CoV-2 infections'),
+  h5(tags$a(
+    href="https://zenodo.org/badge/latestdoi/242795015",
+    tags$img(src="https://zenodo.org/badge/242795015.svg",
+             title="DOI"))),
   h5("Developed by the Center for Communicable Disease Dynamics at the Harvard T.H. Chan School of Public Health (Rebecca Kahn, Stephen Kissler, Nishant Kishore and Marc Lipsitch), in collaboration with Health Department colleagues. This is for scenario exploration only. Some scenarios generated may be unrealistic, and users should exercise judgment in interpreting the outputs."),
   strong(h5("Overview:")),
   tags$ul(tags$li(h5("We calibrated timing of introductions of infected persons into a city based on an epidemic curve with exponential growth beginning on December 1 (based on genomics data, SARS-CoV-2 was estimated to have been first introduced into the human population sometime in November or early December 2019)
@@ -41,8 +45,7 @@ ui <- fluidPage(position="left",
           tags$li(h5("The static table at the bottom (does not change with inputs) shows the average cumulative infections by the end of February, March and April across values for number of introductions and proportion of presymptomatic transmission for simulations with 50% infections symptomatic, 10% probability of self-observation and limiting contacts, R0 of 2.2 for symptomatic infections, and 0.2 relative R0 for asymptomatic infections."))),
   h5("Findings:"),
   tags$ul(tags$li(h5("The amount of presymptomatic transmission and the extent to which infected people limit contacts (a combination of proportion symptomatic and probability they will self-observe) have a large impact on the total number of infections."))),
-  
-  
+
   div(style="display:inline-block",shinyWidgets::sliderTextInput(inputId = "num_introductions",
               label = "Number of introductions",
               choices = c(1,2,5,10,25,50,100),selected=5)),
@@ -63,8 +66,7 @@ ui <- fluidPage(position="left",
               choices = c(0,0.1,0.3,0.5),selected=0.1)),
   
   mainPanel(position="right",
-            tableOutput('table2'),plotlyOutput("graph2"),plotlyOutput("graph3"),tableOutput('table1'),textOutput('text1'),textOutput('text2'),
-            textOutput('text4'),textOutput('text5'),textOutput('text6'),textOutput('text7'),
+            tableOutput('table2'),plotlyOutput("graph2"),plotlyOutput("graph3"),tableOutput('table1'),textOutput('text1'),imageOutput('image1')
   )
 )
 
@@ -155,6 +157,9 @@ server <- function(input, output) {
   output$text1 <- renderText(
     "Questions or comments: Rebecca Kahn (rek160@mail.harvard.edu)"
   )
+  
+ 
+
 }
 
 shinyApp(ui = ui, server = server)
