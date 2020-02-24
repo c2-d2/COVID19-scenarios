@@ -67,7 +67,7 @@ ui <- fluidPage(position="left",
               choices = c(0,0.1,0.3,0.5),selected=0.1)),
   
   mainPanel(position="right",
-            tableOutput('table2'),plotlyOutput("graph2"),plotlyOutput("graph3"),tableOutput('table1'),textOutput('text1')
+            tableOutput('table2'),plotlyOutput("graph2"),plotlyOutput("graph3"),tableOutput('table1')
   )
 )
 
@@ -154,11 +154,7 @@ server <- function(input, output) {
     ggplotly(p, tooltip = "text")
       
   })
-  
-  output$text1 <- renderText(
-    "Questions or comments: Rebecca Kahn (rek160@mail.harvard.edu)"
-  )
-  
+
  
 
 }
