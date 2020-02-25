@@ -28,7 +28,7 @@ ui <- fluidPage(position="left",
   h5("The black line is the average of the 50 stochastic simulations shown in grey, and the red line is the average number of severe COVID-2019 illnesses. All 50 simulations shown on a given graph have the same parameters. 
      The variation between outbreak trajectories on the same graph comes from the stochasticity in the following:"),
   tags$ul(tags$li(h5("Timing of introductions (the number of infected people introduced on a given day is drawn from a binomial distribution, with the probability of introduction calibrated to the exponential epidemic curve).")), 
-          tags$li(h5("Number of secondary infections (drawn from a negative binomial distribution with mean of R0 and dispersion parameter 0.5 (Riou 2020) for each symptomatic infection and a mean = R0*reduction in R0 for asymptomatic infection). 
+          tags$li(h5("Number of secondary infections (drawn from a negative binomial distribution with mean of R0 and dispersion parameter 0.5 (Riou 2020) for each infection). 
                      This distribution allows for superspreaders, which can impact early epidemic dynamics.")), 
           tags$li(h5("Timing of secondary infections (drawn from a triangular distribution, calibrated to the percent of transmission that occurs presymptomatically).")), 
           tags$li(h5("Whether an infected person will have symptoms (drawn from a binomial distribution for each infected person with probability based on the input value selected). Among infections with symptoms, whether or not the infection is severe is drawn from a binomial distribution with probability 0.18 (WHO).")), 
@@ -43,13 +43,13 @@ ui <- fluidPage(position="left",
           tags$li(h5("The table at the top shows the median serial interval (time between symptom onset for infector-infectee pair) and doubling time. 
         Note, doubling times are only calculated once at least 5 local infections have occurred and only for simulations with a total number of infections by the end of April at least 3 times the number of introductions.
         Doubling times between 5-7 days are most consistent with the Wuhan outbreak (Wu 2020), so doubling times shorter than this likely indicate unrealistic parameter combinations. Longer doubling times may reflect impact of self-observation.")),
-          tags$li(h5("The static table at the bottom (does not change with inputs) shows the average cumulative infections by the end of February, March and April across values for number of introductions and proportion of presymptomatic transmission for simulations with 50% infections symptomatic, 10% probability of self-observation and limiting contacts, R0 of 2.2 for symptomatic infections, and 0.2 relative R0 for asymptomatic infections."))),
+          tags$li(h5("The static table at the bottom (does not change with inputs) shows the average cumulative infections by the end of February, March and April across values for number of introductions and proportion of presymptomatic transmission for simulations with 50% infections symptomatic, 10% probability of self-observation and limiting contacts, overall R0 of 2, and 0.2 relative R0 for asymptomatic infections."))),
   h5("Findings:"),
   tags$ul(tags$li(h5("The amount of presymptomatic transmission and the extent to which infected people limit contacts (a combination of proportion symptomatic and probability they will self-observe) have a large impact on the total number of infections."))),
 
   div(style="display:inline-block",shinyWidgets::sliderTextInput(inputId = "num_introductions",
               label = "Number of introductions",
-              choices = c(1,2,5,10,25,50,100),selected=5)),
+              choices = c(1,2,5,10,25,50,100),selected=1)),
   div(style="display:inline-block",shinyWidgets::sliderTextInput(inputId = "symp_prob",
               label = "Proportion of infections that are symptomatic",
               choices = c(0.5,0.7,0.9), selected=0.5)),
@@ -57,8 +57,8 @@ ui <- fluidPage(position="left",
               label = "Probability a person with symptomatic infection will self-observe and limit contacts",
               choices = c(0.1,0.5,0.9),selected=0.1)),
   div(style="display:inline-block",shinyWidgets::sliderTextInput(inputId = "R0",
-              label = "R0 for symptomatic infections",
-              choices = c(2,2.2,2.6,3),selected=2.2)),
+              label = "R0",
+              choices = c(2,2.2,2.6,3),selected=2)),
   div(style="display:inline-block",shinyWidgets::sliderTextInput(inputId = "R0_reduce",
               label = "R0 for asymptomatic infection relative to symptomatic infection",
               choices = c(0.2,0.6,1),selected = 0.2)), 
@@ -78,7 +78,7 @@ server <- function(input, output) {
     "Average cumulative infections end of February", "Average cumulative infections end of March", "Average cumulative infections end of April",
     "Median serial interval (days)", "Median doubling time (days)")
      nCoV_table
-  }, caption="The above table shows results for simulations with 50% infections symptomatic, 10% probability of self-observation and limiting contacts, R0 of 2.2 for symptomatic infections, and 0.2 relative R0 for each asymptomatic infections.")
+  }, caption="The above table shows results for simulations with 50% infections symptomatic, 10% probability of self-observation and limiting contacts, overall R0 of 2, and 0.2 relative R0 for each asymptomatic infections.")
   
   output$table2 <- renderTable({
     isolate_prob <- input$isolate_prob
@@ -89,10 +89,13 @@ server <- function(input, output) {
     R0_symp <- input$R0
     
     data <- read.csv(paste0('./simulations/Info/SI_',R0_symp,"_",R0_reduce,"_",isolate_prob,"_",symp_prob,"_1.5_",num_introductions,"_",pre_symp,".csv"),header=FALSE)
+    names(data) <- c("X1","SI","Doubling_times","Growth_rates","total_cases",
+                   "isolate_prob","symp_prob","num_introductions","pre_symp","R0_reduce","R0")
+    data$Doubling_times[data$total_cases==0] <- NA
     median <- apply(data,2,median,na.rm=TRUE)
     #mean <- apply(data,2,mean,na.rm=TRUE)
     #data <- cbind(median,mean)
-    median <- as.data.frame(rbind(round(median[3],2),round(median[13],2)))
+    median <- as.data.frame(rbind(round(median[2],2),round(median[3],2)))
     names(median) <- "Median"
     median[median==Inf] <- NA
     median[median>30] <- ">30"
@@ -154,7 +157,6 @@ server <- function(input, output) {
     ggplotly(p, tooltip = "text")
       
   })
-
  
 
 }

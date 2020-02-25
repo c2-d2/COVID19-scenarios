@@ -17,14 +17,14 @@ require(incidence)
 # pre_symp is proportion of transmission occurring pre_symptomatically
 # inf_max is max days post symptoms of infectiousness used for triangular distributin of onward infection time relative to symptom onset; 
 # R0_reduce is relative R0 for those without symptoms
-# R0_symp is basic reproductive number for those with symptoms
+# R0 is basic reproductive number overall
 
 # isolate_shape and isolate_rate are parameters for gamma distribution for time from symptom onset to self observation
 # isolate_prob is probability an infected person will self-observe and limit contacts once symptoms develop; assume transmission stops once isolated
 # symp_prob is proportion of people with symptoms
 
 estimate_cases <- function(nsim,N,T,num_introductions,inc_shape,inc_scale,
-                           pre_symp,inf_max,R0_reduce,R0_symp,isolate_shape,isolate_rate,isolate_prob,symp_prob){
+                           pre_symp,inf_max,R0_reduce,R0,isolate_shape,isolate_rate,isolate_prob,symp_prob){
   
   # create data frame to store results
   epidemic_curve_master <- as.data.frame(cbind("Sim"=double(),"Day_infected"=double(),"Cases"=double(),"Imports"=double(),"Severe_cases"=double(),"Cum_cases"=double(),"Cum_severe_cases"=double()))
@@ -140,7 +140,8 @@ estimate_cases <- function(nsim,N,T,num_introductions,inc_shape,inc_scale,
       if (num_new_infectors >0){
         
           # use R0 distribution to get # of potential secondary infectees for each new infector
-          R0_asymp <- R0_symp*R0_reduce
+          R0_symp <-  R0/(symp_prob + (1-symp_prob)*R0_reduce)
+          R0_asymp <- R0_symp*R0_reduce          
           # choose number to infect based on R0 given symptoms using negative binomial distribution
           num_pot_infectees <- rnbinom(num_new_infectors, size=0.5,  mu=c(ifelse(is.na(unlist(symptom_times)),R0_asymp,R0_symp)))
           #num_pot_infectees <- rpois(num_new_infectors,c(ifelse(is.na(unlist(symptom_times)),R0_asymp,R0_symp))) # Also could make R0 negative binomial to allow for superspreading
@@ -298,7 +299,7 @@ estimate_cases <- function(nsim,N,T,num_introductions,inc_shape,inc_scale,
                                     "num_introductions"=rep(num_introductions,nrow(epidemic_curve_master2)),
                                     "pre_symp"=rep(pre_symp,nrow(epidemic_curve_master2)),
                                     "R0_reduce"=rep(R0_reduce,nrow(epidemic_curve_master2)),
-                                    "R0"=rep(R0_symp,nrow(epidemic_curve_master2)))
+                                    "R0"=rep(R0,nrow(epidemic_curve_master2)))
   
   # make start day December 1, 2019
   date <- as.Date("11/30/19","%m/%d/%y")
@@ -306,7 +307,7 @@ estimate_cases <- function(nsim,N,T,num_introductions,inc_shape,inc_scale,
   epidemic_curve_master2$date <- epidemic_curve_master2$Day_infected + date
   
   # save file
-  write.table(epidemic_curve_master2,paste0("epidemic_curve_master_",R0_symp,"_",R0_reduce,"_",isolate_prob,"_",symp_prob,"_",isolate_shape,"_",num_introductions,"_",pre_symp,".csv"),sep=",",col.names = FALSE)
+  write.table(epidemic_curve_master2,paste0("epidemic_curve_master_",R0,"_",R0_reduce,"_",isolate_prob,"_",symp_prob,"_",isolate_shape,"_",num_introductions,"_",pre_symp,".csv"),sep=",",col.names = FALSE)
   
   summary_stats <- cbind(SI,Doubling_times,Growth_rates,total_cases,
                    "isolate_prob"=rep(isolate_prob,nsim),
@@ -314,9 +315,9 @@ estimate_cases <- function(nsim,N,T,num_introductions,inc_shape,inc_scale,
                    "num_introductions"=rep(num_introductions,nsim),
                    "pre_symp"=rep(pre_symp,nsim),
                    "R0_reduce"=rep(R0_reduce,nsim),
-                   "R0"=rep(R0_symp,nsim))
+                   "R0"=rep(R0,nsim))
  
-  write.table(summary_stats,paste0("SI_",R0_symp,"_",R0_reduce,"_",isolate_prob,"_",symp_prob,"_",isolate_shape,"_",num_introductions,"_",pre_symp,".csv"),sep=",",col.names = FALSE)
+  write.table(summary_stats,paste0("SI_",R0,"_",R0_reduce,"_",isolate_prob,"_",symp_prob,"_",isolate_shape,"_",num_introductions,"_",pre_symp,".csv"),sep=",",col.names = FALSE)
   
   return(epidemic_curve_master2)
 
@@ -324,6 +325,6 @@ estimate_cases <- function(nsim,N,T,num_introductions,inc_shape,inc_scale,
 
 # the parameters without preset values are the ones that can be varied in the shiny app
 simulation <- estimate_cases(nsim=50,N=100000,T=152,num_introductions,inc_shape=2.39,inc_scale=6.54,
-                             pre_symp,inf_max=6,R0_reduce,R0_symp,isolate_shape=1.5,isolate_rate=0.9,isolate_prob,symp_prob)
+                             pre_symp,inf_max=6,R0_reduce,R0,isolate_shape=1.5,isolate_rate=0.9,isolate_prob,symp_prob)
 
 
